@@ -1,0 +1,35 @@
+{
+  "name": "Amazon Asambhav App Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+  "features": {},
+  "runArgs": [
+    "--privileged",
+    "-v",
+    "/var/run/docker.sock:/var/run/docker.sock"
+  ],
+  "forwardPorts": [3000],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.autoSave": "onWindowChange",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "dsznajder.es7-react-js-snippets",
+        "formulahendry.auto-rename-tag",
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.path-intellisense",
+        "ms-vscode.vscode-typescript-next",
+        "amazonwebservices.aws-toolkit-vscode"
+      ]
+    }
+  },
+  "remoteUser": "root",
+  "postCreateCommand": "apt-get update && apt-get install -y docker.io && until docker info > /dev/null 2>&1; do echo 'Waiting for Docker to start...'; sleep 2; done && docker build -t amazon-asambhav-app ."
+}

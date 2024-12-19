@@ -1,0 +1,47 @@
+name: Check Docker Image Build
+
+on:
+  schedule:
+    - cron: "58 22 * * *" # Runs every day at 10:58 PM
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js version (to match Dockerfile)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      # Step 4: Build Docker image with a specified tag
+      - name: Build Docker image
+        run: docker build -t nextjs-app-test .
+
+      # Step 5: Test the Docker container to ensure it starts correctly
+      - name: Test Docker container
+        run: docker run --rm -d -p 3000:3000 --name test_container nextjs-app-test npm run dev
+
+      # Step 6: Wait and check container logs
+      - name: Wait and check container logs
+        run: |
+          sleep 5  # Wait for a few seconds to let the container start
+          docker logs test_container
+
+      # Step 7: Cleanup - Stop and remove the container and image
+      - name: Cleanup
+        run: |
+          docker stop test_container || true
+          docker rm test_container || true
+          docker rmi nextjs-app-test || true

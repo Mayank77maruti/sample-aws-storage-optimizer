@@ -1,0 +1,155 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:982081054009:task-definition/onestopvyapar:11",
+    "containerDefinitions": [
+        {
+            "name": "onestopvyapaar",
+            "image": "982081054009.dkr.ecr.ap-south-1.amazonaws.com/onestopvyapaar:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "name": "port-fargate-3000",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DB_USER",
+                    "value": "postgres"
+                },
+                {
+                    "name": "SHOPIFY_API_KEY",
+                    "value": "9bbfbf9019b7c1211b9efc9d941957d7"
+                },
+                {
+                    "name": "HOST",
+                    "value": "7257-223-176-12-153.ngrok-free.app"
+                },
+                {
+                    "name": "DB_NAME",
+                    "value": "postgres"
+                },
+                {
+                    "name": "S3_BUCKET_NAME",
+                    "value": "onestop-vyapar"
+                },
+                {
+                    "name": "NEXT_PUBLIC_USER_POOL_ID",
+                    "value": "ap-south-1_SN6hSkk6n"
+                },
+                {
+                    "name": "SHOPIFY_API_SECRET_KEY",
+                    "value": "8d179da86b0542cb7741f9b1a61455ca"
+                },
+                {
+                    "name": "SHOP",
+                    "value": "quickstart-64fd9d6b.myshopify.com"
+                },
+                {
+                    "name": "AWS_SECRET_KEY_ID",
+                    "value": "6TIkW8X5xnwCWSje5eN76qBy6NfOJbkTOigbFqRA"
+                },
+                {
+                    "name": "DATABASE_URL",
+                    "value": "postgresql://postgres:123456lol123456@database-1.cn64k84iqhmx.ap-south-1.rds.amazonaws.com:5432/postgres?schema=public"
+                },
+                {
+                    "name": "PINPOINT_PROJECT_ID",
+                    "value": "8cbbb10ce07246ff9d2528af1326a886"
+                },
+                {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "value": "AKIA6JKEXUU4STV2MMKZ"
+                },
+                {
+                    "name": "KMS_KEY_ID",
+                    "value": "59b754a5-6487-4d08-9528-2ef93683afde"
+                },
+                {
+                    "name": "NEXT_PUBLIC_USER_POOL_CLIENT_ID",
+                    "value": "5t89v331ko84loim28vddu76rj"
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "value": "123456lol123456"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/onestopvyapar",
+                    "mode": "non-blocking",
+                    "awslogs-create-group": "true",
+                    "max-buffer-size": "25m",
+                    "awslogs-region": "ap-south-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "onestopvyapar",
+    "taskRoleArn": "arn:aws:iam::982081054009:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::982081054009:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 11,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.28"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-11-24T08:20:24.610Z",
+    "registeredBy": "arn:aws:iam::982081054009:user/ultimate_accessor",
+    "tags": []
+}

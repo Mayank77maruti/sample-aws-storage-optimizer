@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Seller {
+  id           String        @id @default(uuid())
+  name         String
+  userId       String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  email        String        @unique
+  phone        String?
+  address      String?
+  city         String?
+  country      String?
+  pincode      String?
+  state        String?
+  orders       Order[]
+  products     Product[]
+  session      Session?
+  mcfShipments MCFShipment[]
+}
+
+model Session {
+  id          String    @id @default(uuid())
+  sellerId    String    @unique
+  shop        String?
+  state       String?
+  isOnline    Boolean   @default(false)
+  scope       String?
+  expires     DateTime?
+  accessToken String
+  Seller      Seller    @relation(fields: [sellerId], references: [id])
+}
+
+model Product {
+  id            String          @id @default(uuid())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  bodyHtml      String
+  productType   String
+  sellerId      String
+  shopifyId     BigInt?
+  tags          String[]
+  title         String
+  vendor        String
+  orderProducts OrderProduct[]  @relation("ProductToOrderProduct")
+  Seller        Seller          @relation(fields: [sellerId], references: [id])
+  images        ProductImage[]
+  options       ProductOption[]
+  variants      Variant[]
+  mcfShipments  MCFShipment[]   @relation("MCFShipmentToProduct")
+}
+
+model ProductOption {
+  id        String   @id @default(uuid())
+  productId String
+  name      String
+  values    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Variant {
+  id           String   @id @default(uuid())
+  productId    String
+  title        String
+  price        Float
+  sku          String?
+  inventoryQty Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  Product      Product  @relation(fields: [productId], references: [id])
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id                String         @id @default(uuid())
+  sellerId          String
+  createdAt         DateTime       @default(now())
+  shopifyId         BigInt?        @unique
+  status            String
+  totalPrice        Float
+  updatedAt         DateTime       @updatedAt
+  billingAddressId  String?
+  currency          String
+  customerId        String?
+  financialStatus   String?
+  fulfillmentStatus String?
+  shippingAddressId String?
+  fulfillment       Fulfillment[]  @relation("OrderToFulfillment")
+  billingAddress    Address?       @relation("OrderBillingAddress", fields: [billingAddressId], references: [id])
+  Customer          Customer?      @relation(fields: [customerId], references: [id])
+  Seller            Seller         @relation(fields: [sellerId], references: [id])
+  shippingAddress   Address?       @relation("OrderShippingAddress", fields: [shippingAddressId], references: [id])
+  orderProducts     OrderProduct[] @relation("OrderToOrderProduct")
+  mcfShipments      MCFShipment[]  @relation("OrderToMCFShipment")
+}
+
+model OrderProduct {
+  id            String   @id @default(uuid())
+  productId     String
+  orderId       String
+  quantity      Int
+  price         Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  tax           Float?
+  totalDiscount Float?
+  Order         Order    @relation("OrderToOrderProduct", fields: [orderId], references: [id])
+  Product       Product  @relation("ProductToOrderProduct", fields: [productId], references: [id])
+}
+
+model Address {
+  id                   String   @id @default(uuid())
+  firstName            String
+  lastName             String
+  address1             String
+  address2             String?
+  city                 String
+  province             String
+  provinceCode         String
+  country              String
+  countryCode          String
+  postalCode           String
+  phone                String?
+  latitude             Float?
+  longitude            Float?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  OrderBillingAddress  Order[]  @relation("OrderBillingAddress")
+  OrderShippingAddress Order[]  @relation("OrderShippingAddress")
+}
+
+model Fulfillment {
+  id              String   @id @default(uuid())
+  orderId         String
+  status          String
+  trackingCompany String?
+  trackingNumber  String?
+  trackingUrl     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  Order           Order    @relation("OrderToFulfillment", fields: [orderId], references: [id])
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  shopifyId BigInt?
+  email     String
+  firstName String
+  lastName  String
+  phone     String?
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model MCFShipment {
+  id             String    @id @default(uuid())
+  sellerId       String
+  orderId        String
+  status         String    @default("in_progress")
+  shippingMethod String // e.g., 'Standard', 'Express'
+  address        String
+  deliveryDate   DateTime
+  trackingUrl    String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  Seller         Seller    @relation(fields: [sellerId], references: [id])
+  items          Product[] @relation("MCFShipmentToProduct")
+  Order          Order     @relation("OrderToMCFShipment", fields: [orderId], references: [id])
+}

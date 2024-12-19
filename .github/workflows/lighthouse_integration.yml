@@ -1,0 +1,43 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lighthouse-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Build the Docker image
+      - name: Build Docker Image
+        run: docker build -t app .
+
+      # Step 3: Start the Docker container
+      - name: Start Docker Container
+        run: |
+          docker run -d -p 3000:3000 --name nextjs-app app
+          sleep 10
+
+      # Step 4: Install Lighthouse CI globally
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli
+
+      # Step 5: Run Lighthouse CI
+      - name: Run Lighthouse CI
+        env:
+          LHCI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: lhci autorun --upload.target=temporary-public-storage
+
+      # Step 6: Cleanup Docker
+      - name: Stop and Remove Docker Container
+        run: |
+          docker stop nextjs-app
+          docker rm nextjs-app
