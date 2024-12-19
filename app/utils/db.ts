@@ -5,7 +5,8 @@ dotenv.config();
 export const client = new DynamoDBClient({
     region: 'ap-south-1',
     credentials: {
-        
+        accessKeyId: 'AKIA6JKEXUU466Q7HDKX',
+        secretAccessKey: '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'
     }
 });
 

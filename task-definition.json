@@ -48,7 +48,10 @@
                     "name": "SHOP",
                     "value": "quickstart-64fd9d6b.myshopify.com"
                 },
-               
+                {
+                     "name": "AWS_SECRET_KEY_ID",
+                    "value": "6TIkW8X5xnwCWSje5eN76qBy6NfOJbkTOigbFqRA"
+                },
                 {
                     "name": "DATABASE_URL",
                     "value": "postgresql://postgres:123456lol123456@database-1.cn64k84iqhmx.ap-south-1.rds.amazonaws.com:5432/postgres?schema=public"
@@ -57,7 +60,10 @@
                     "name": "PINPOINT_PROJECT_ID",
                     "value": "8cbbb10ce07246ff9d2528af1326a886"
                 },
-                
+                {
+                    "name": "AWS_ACCESS_KEY_ID",
+                    "value": "AKIA6JKEXUU4STV2MMKZ"
+                },
                 {
                     "name": "KMS_KEY_ID",
                     "value": "59b754a5-6487-4d08-9528-2ef93683afde"
